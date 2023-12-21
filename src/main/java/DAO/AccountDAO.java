@@ -11,12 +11,12 @@ public class AccountDAO {
      * TODO: handle duplicate username
      */
 
-     public Account createAccount(Account account){
-        Connection connection = ConnectionUtil.getConnection();
+     public Account registerAccount(Account account){
+       
         
-        try{
+        try(Connection connection = ConnectionUtil.getConnection();){
             String sql = "INSERT INTO account (username, password) VALUES (?,?)";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             
             preparedStatement.setString(1, account.getUsername());
             preparedStatement.setString(2, account.getPassword());
@@ -30,25 +30,29 @@ public class AccountDAO {
                  return new Account(account_id, account.getUsername(), account.getPassword());
             }
         }catch (SQLException e){
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
 
         return null;
      }
 
-     public Account getUsername(String username){
+     public Account login(Account account){
         Connection connection = ConnectionUtil.getConnection();
         try{
-            String sql = "SELECT * FROM account WHERE username = ?; ";
+            String sql = "SELECT * FROM account WHERE username = ? AND password = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             
-            preparedStatement.setString(1, username);
+            preparedStatement.setString(1, account.getUsername());
+            preparedStatement.setString(2, account.getPassword());
 
-            preparedStatement.executeUpdate();
+            preparedStatement.executeQuery();
 
             //for checking
-            ResultSet rs = preparedStatement.getGeneratedKeys();
+            ResultSet rs = preparedStatement.executeQuery();
             if(rs.next()){
+                //delete me
+                System.out.println("inside login success");
+
                  int account_id = (int) rs.getLong(1);
                  String account_username = rs.getString(2);
                  String account_password = rs.getString(3);

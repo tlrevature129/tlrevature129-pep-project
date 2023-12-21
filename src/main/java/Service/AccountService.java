@@ -27,7 +27,13 @@ public class AccountService {
      * @return The new account if registration is successful
      */
     public Account registerAccount(Account account){
-        return accountDAO.createAccount(account);
+        if(account.getUsername().equals("")) return null;
+        if(account.getPassword().length() < 4) return null;
+        return accountDAO.registerAccount(account);
+    }
+
+    public Account login(Account account){
+        return accountDAO.login(account);
     }
 }
  

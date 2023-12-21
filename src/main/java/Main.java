@@ -1,4 +1,8 @@
 import Controller.SocialMediaController;
+import DAO.AccountDAO;
+import Model.Account;
+import Service.AccountService;
+import Util.ConnectionUtil;
 import io.javalin.Javalin;
 
 /**
@@ -7,8 +11,15 @@ import io.javalin.Javalin;
  */
 public class Main {
     public static void main(String[] args) {
-        SocialMediaController controller = new SocialMediaController();
-        Javalin app = controller.startAPI();
-        app.start(8080);
+        //SocialMediaController controller = new SocialMediaController();
+        //Javalin app = controller.startAPI();
+        //app.start(8080);
+
+        
+        ConnectionUtil.resetTestDatabase();
+        Account acc = new Account("test1", "success");
+        AccountService service = new AccountService();
+        System.out.println(service.registerAccount(acc));
+        System.out.println("login: " + service.login(acc));
     }
 }
