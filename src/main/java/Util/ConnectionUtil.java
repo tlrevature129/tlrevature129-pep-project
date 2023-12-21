@@ -58,7 +58,7 @@ public class ConnectionUtil {
 		return null;
 	}
 
-	/**
+	/**4
 	 * For the purpose of testing, we will need to drop and recreate our database
 	 * tables to keep it consistent across all tests. The method will read the sql
 	 * file in resources. This will be performed before every test.
