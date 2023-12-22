@@ -11,6 +11,10 @@ public class MessageService {
     }
 
     public Message createMessage(Message message){
-        return messageDAO.createMessage(message);
+        AccountService accountService = new AccountService();
+        if(accountService.getAccount(message.getPosted_by()) != null){
+            return messageDAO.createMessage(message);
+        }
+        return null;
     }
 }

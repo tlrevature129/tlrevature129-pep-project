@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import Model.Account;
+import Model.Message;
 import Service.AccountService;
 import Service.MessageService;
 import io.javalin.Javalin;
@@ -77,11 +78,17 @@ public class SocialMediaController {
      * Handler for creating Message
      * 
      */
-    private void createMessageHandler(Context context){
-        //message not blank
+    private void createMessageHandler(Context context) throws JsonProcessingException{
+        ObjectMapper mapper = new ObjectMapper();
 
-        //message under 255 characters
-
-        //posted by real user
+        Message message = mapper.readValue(context.body(), Message.class);
+        int messageLength = message.getMessage_text().length();
+        Message newMessage = messageService.createMessage(message);
+        //account is posed by real user
+        if(messageLength > 0 && messageLength <= 255 && newMessage != null){    
+            context.json(mapper.writeValueAsString(message));
+        }else{
+            context.status(400);
+        }
     }
 }

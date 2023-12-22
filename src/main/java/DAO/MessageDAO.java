@@ -27,10 +27,10 @@ public class MessageDAO {
 
             ResultSet rs = preparedStatement.getGeneratedKeys();
             if(rs.next()){
-                int message_id = rs.getInt("message_id");
-                int posted_by = rs.getInt("posted_by");
-                String message_text = rs.getString("message_text");
-                Long time_posted_epoch = rs.getLong("time_posted_epoch");
+                int message_id = (int) rs.getLong(1);
+                int posted_by = message.getPosted_by();
+                String message_text = message.getMessage_text();
+                Long time_posted_epoch = message.getTime_posted_epoch();
                 return new Message(message_id, posted_by, message_text, time_posted_epoch);
             }
         }catch (SQLException e){
