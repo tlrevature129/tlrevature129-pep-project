@@ -34,6 +34,7 @@ public class SocialMediaController {
         app.get("example-endpoint", this::exampleHandler);
         app.post("/register", this::registrationHandler);
         app.post("/login", this::loginHandler);
+        app.post("/messages", this::createMessageHandler);
         return app;
     }
 
@@ -44,10 +45,6 @@ public class SocialMediaController {
     private void exampleHandler(Context context) {
         context.json("sample text");
     }
-
-    /*
-     * Handler for creating Message
-     */
 
      /**
       * Handler for registering account
@@ -74,5 +71,17 @@ public class SocialMediaController {
             context.status(401);
         }
 
+    }
+
+    /**
+     * Handler for creating Message
+     * 
+     */
+    private void createMessageHandler(Context context){
+        //message not blank
+
+        //message under 255 characters
+
+        //posted by real user
     }
 }

@@ -35,5 +35,9 @@ public class AccountService {
     public Account login(Account account){
         return accountDAO.login(account);
     }
+
+    public Account getAccount(int account_id){        
+        return accountDAO.getAccountById(account_id);
+    }
 }
  
