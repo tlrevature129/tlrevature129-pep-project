@@ -39,6 +39,7 @@ public class SocialMediaController {
         app.post("/login", this::loginHandler);
         app.post("/messages", this::createMessageHandler);
         app.get("/messages", this::getAllMessageHandler);
+        app.get("messages/{message_id}", this::getSingleMessage);
         return app;
     }
 
@@ -50,7 +51,7 @@ public class SocialMediaController {
         context.json("sample text");
     }
 
-     /**
+     /*
       * Handler for registering account
       */
     private void registrationHandler(Context context) throws JsonProcessingException{
@@ -82,8 +83,12 @@ public class SocialMediaController {
     }
 
     /**
-     * Handler for creating a new message
+     * creates a message if and only if 
+     * the message_text is not blank,
+     * is under 255 characters, 
+     * and posted_by refers to a real, existing user.
      * 
+     * responds with Json of the message including its message_id
      */
     private void createMessageHandler(Context context) throws JsonProcessingException{
         ObjectMapper mapper = new ObjectMapper();
@@ -100,8 +105,24 @@ public class SocialMediaController {
         }
     }
 
+    /*
+     * respons with a JSON representation of a list containing all messages retrieved from the database
+     * 
+     */
     private void getAllMessageHandler(Context context) throws JsonProcessingException{
         List<Message> messages = messageService.getAllMessage();
         context.json(messages);
     }
+
+    private void getSingleMessage(Context context) throws JsonProcessingException{
+        int messageId = Integer.parseInt(context.pathParam("message_id"));
+        Message message = messageService.getMessageByMessageId(messageId);
+        if(message != null){
+            context.json(messageService.getMessageByMessageId(messageId));
+        }else {
+            context.status(200);
+        }
+    }
+
+
 }

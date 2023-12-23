@@ -83,7 +83,6 @@ public class AccountDAO {
             
             preparedStatement.setInt(1, id);
 
-            preparedStatement.executeQuery();
             ResultSet rs = preparedStatement.executeQuery();
 
             if(rs.next()){
