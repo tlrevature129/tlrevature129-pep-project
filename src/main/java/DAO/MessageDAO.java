@@ -25,7 +25,7 @@ public class MessageDAO {
 
             preparedStatement.executeUpdate();
 
-            ResultSet rs = preparedStatement.getGeneratedKeys();
+            ResultSet rs = preparedStatement.getGeneratedKeys();        
             if(rs.next()){
                 int message_id = (int) rs.getLong(1);
                 int posted_by = message.getPosted_by();

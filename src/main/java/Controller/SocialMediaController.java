@@ -84,9 +84,10 @@ public class SocialMediaController {
         Message message = mapper.readValue(context.body(), Message.class);
         int messageLength = message.getMessage_text().length();
         Message newMessage = messageService.createMessage(message);
-        //account is posed by real user
+
+        //check message length
         if(messageLength > 0 && messageLength <= 255 && newMessage != null){    
-            context.json(mapper.writeValueAsString(message));
+            context.json(mapper.writeValueAsString(newMessage));
         }else{
             context.status(400);
         }
