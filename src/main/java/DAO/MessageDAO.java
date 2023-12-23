@@ -100,13 +100,24 @@ public class MessageDAO {
                 return new Message(message_id, posted_by, message_text, time_posted_epoch);
             }
         }catch (SQLException e){
-            e.getStackTrace();
+            e.printStackTrace();
         }
 
         return null;
      }
 
-     public Message deleteMessageById(int messageId){
-        return null;
+     public void deleteMessageById(int messageId){
+        Connection connection = ConnectionUtil.getConnection();
+
+        try{
+            String sql = "DELETE FROM message WHERE message_id = ?";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, messageId);
+
+            preparedStatement.executeUpdate();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
      }
 }
