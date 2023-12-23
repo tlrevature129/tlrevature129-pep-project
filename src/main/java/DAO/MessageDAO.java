@@ -1,14 +1,25 @@
 package DAO;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import Model.Message;
 import Util.ConnectionUtil;
 
+/*
+ * message_id int primary key auto_increment,
+ * posted_by int,
+ * message_text varchar(255),
+ * time_posted_epoch bigint,
+ * foreign key (posted_by) references  account(account_id)
+ */
+
+
 public class MessageDAO {
 
     /**
-     * inserts message into database
+     * Create New Message
      * @param message
      * @return Message is one is created successfully
      */
@@ -40,4 +51,34 @@ public class MessageDAO {
         return null;
      }
      
+     /**
+      * returns all messages in the database
+      * @return list of messages in the database
+      */
+     public List<Message> getAllMessage() {
+        Connection connection = ConnectionUtil.getConnection();
+        List<Message> messages = new ArrayList<>();
+        
+        try{
+            String sql = "SELECT * FROM message";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                     
+            ResultSet rs = preparedStatement.executeQuery();
+            while(rs.next()){
+
+                int message_id = rs.getInt(1);
+                int posted_by = rs.getInt(2);
+                String message_text = rs.getString(3);
+                long time_posted_epoch = rs.getLong(4);
+                Message message = new Message(message_id, posted_by, message_text, time_posted_epoch);
+
+                messages.add(message);
+            }
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return messages;
+     }
 }
