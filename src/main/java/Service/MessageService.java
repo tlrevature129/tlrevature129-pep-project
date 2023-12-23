@@ -36,4 +36,13 @@ public class MessageService {
         }
         return null;
     }
+
+    public Message updateMessage(int messageId, String newMessage){
+        Message oldMsg = messageDAO.getMessageByMessageId(messageId);
+        if(oldMsg != null){
+            messageDAO.updatMessage(messageId, newMessage);
+            return messageDAO.getMessageByMessageId(messageId);
+        }
+        return null;
+    }
 }

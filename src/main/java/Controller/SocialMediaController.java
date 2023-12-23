@@ -3,6 +3,7 @@ package Controller;
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import Model.Account;
@@ -41,6 +42,7 @@ public class SocialMediaController {
         app.get("/messages", this::getAllMessageHandler);
         app.get("messages/{message_id}", this::getSingleMessageHandler);
         app.delete("messages/{message_id}", this::deleteMessageByIdHandler);
+        app.patch("/messages/{message_id}", this::updateMessageHandler);
         return app;
     }
 
@@ -136,5 +138,29 @@ public class SocialMediaController {
         }
     }
 
-    
+    private void updateMessageHandler(Context context) throws JsonProcessingException{
+        ObjectMapper mapper = new ObjectMapper();        
+        JsonNode jNode = mapper.readTree(context.body());
+        
+        //get new message from context
+        String newMessage = jNode.get("message_text").asText();
+        int msgLength = newMessage.length();
+
+        //get message_id from context and check if it's in database
+        int messageId = Integer.parseInt(context.pathParam("message_id"));
+        Message msg = messageService.getMessageByMessageId(messageId);
+
+        //message id exist in database, and meets message length requirement
+        if(msg != null && msgLength > 0 && msgLength <= 255){
+
+            messageService.updateMessage(messageId, newMessage);
+            msg = messageService.getMessageByMessageId(messageId);
+            
+            context.json(msg);
+        }else {
+            context.status(400);
+        }
+    }
+
+
 }

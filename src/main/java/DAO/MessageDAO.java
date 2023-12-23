@@ -120,4 +120,21 @@ public class MessageDAO {
             e.printStackTrace();
         }
      }
+
+     public void updatMessage(int messageId, String newMessage){
+        Connection connection = ConnectionUtil.getConnection();
+
+        try{
+            String sql = "UPDATE message SET message_text = ? WHERE message_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            preparedStatement.setString(1, newMessage);
+            preparedStatement.setInt(2, messageId);
+
+            preparedStatement.executeUpdate();
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+     }
 }
