@@ -89,6 +89,7 @@ public class SocialMediaController {
      * and posted_by refers to a real, existing user.
      * 
      * responds with Json of the message including its message_id
+     * 400 respons on fail
      */
     private void createMessageHandler(Context context) throws JsonProcessingException{
         ObjectMapper mapper = new ObjectMapper();

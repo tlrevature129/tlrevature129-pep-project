@@ -105,4 +105,8 @@ public class MessageDAO {
 
         return null;
      }
+
+     public Message deleteMessageById(int messageId){
+        return null;
+     }
 }
