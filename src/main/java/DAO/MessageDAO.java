@@ -81,6 +81,11 @@ public class MessageDAO {
         return messages;
      }
 
+     /**
+      * returns message found by messageId
+      * @param messageId
+      * @return Message 
+      */
      public Message getMessageByMessageId(int messageId){
         Connection connection = ConnectionUtil.getConnection();
 
@@ -106,6 +111,11 @@ public class MessageDAO {
         return null;
      }
 
+
+     /**
+      * Deletes message with given id
+      * @param messageId
+      */
      public void deleteMessageById(int messageId){
         Connection connection = ConnectionUtil.getConnection();
 
@@ -121,6 +131,11 @@ public class MessageDAO {
         }
      }
 
+     /**
+      * updates old message found by messageId to newMessage
+      * @param messageId
+      * @param newMessage
+      */
      public void updatMessage(int messageId, String newMessage){
         Connection connection = ConnectionUtil.getConnection();
 
@@ -136,5 +151,36 @@ public class MessageDAO {
         }catch (SQLException e){
             e.printStackTrace();
         }
+     }
+
+     /**
+      * finds all the messages posted by accountId and return them
+      * @param accountId
+      * @return list of messages posted by accountId
+      */
+     public List<Message> getAllMessageFromId(int accountId){
+        Connection connection = ConnectionUtil.getConnection();
+        List<Message> messages = new ArrayList<>();
+
+        try{
+            String sql = "SELECT * FROM message WHERE posted_by = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            preparedStatement.setInt(1, accountId);
+
+            ResultSet rs = preparedStatement.executeQuery();
+            while(rs.next()){
+                int message_id = rs.getInt(1);
+                int posted_by = rs.getInt(2);
+                String message_text = rs.getString(3);
+                long time_posted_epoch = rs.getLong(4);
+
+                messages.add(new Message(message_id, posted_by, message_text, time_posted_epoch));
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return messages;
      }
 }

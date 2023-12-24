@@ -40,7 +40,7 @@ public class AccountDAO {
 
 
      /**
-      *checks login credentials
+      *checks login credentials, return account if login and password match db
       *@param account 
       *@return Account if exist and matches, else return null
       */
@@ -73,6 +73,12 @@ public class AccountDAO {
         return null;
      }
 
+     /**
+      * get account info using id
+      *
+      * @param id
+      * @return Account
+      */
      public Account getAccountById(int id){
 
         Connection connection = ConnectionUtil.getConnection();

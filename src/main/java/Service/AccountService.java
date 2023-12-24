@@ -32,6 +32,11 @@ public class AccountService {
         return accountDAO.registerAccount(account);
     }
 
+    /**
+     * 
+     * @param account
+     * @return
+     */
     public Account login(Account account){
         return accountDAO.login(account);
     }
